@@ -1,0 +1,25 @@
+package com.example.ricardogarcia.application.builder;
+
+import com.example.ricardogarcia.photocloud.api.PhotoCloudApiInterface;
+
+import dagger.Module;
+import dagger.Provides;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+/**
+ * Created by Ricardo Garcia on 3/18/2018.
+ */
+@Module
+public class ApiServiceModule {
+
+    @AppScope
+    @Provides
+    public PhotoCloudApiInterface apiServiceModule(){
+        Retrofit retrofit=new Retrofit.Builder()
+                .baseUrl("http://localhost:8080/PhotoCloudService/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        return retrofit.create(PhotoCloudApiInterface.class);
+    }
+}

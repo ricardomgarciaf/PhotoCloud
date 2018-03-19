@@ -1,9 +1,8 @@
-package com.example.ricardogarcia.photocloud.login;
+package com.example.ricardogarcia.photocloud.activities.login;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.widget.CircularProgressDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,7 +11,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.ricardogarcia.photocloud.R;
-import com.example.ricardogarcia.photocloud.home.HomeActivity;
+import com.example.ricardogarcia.photocloud.activities.home.HomeActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

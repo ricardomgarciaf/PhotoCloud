@@ -1,4 +1,4 @@
-package com.example.ricardogarcia.photocloud.home;
+package com.example.ricardogarcia.photocloud.activities.home;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

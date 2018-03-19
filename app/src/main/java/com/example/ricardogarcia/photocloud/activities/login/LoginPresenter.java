@@ -1,4 +1,4 @@
-package com.example.ricardogarcia.photocloud.login;
+package com.example.ricardogarcia.photocloud.activities.login;
 
 /**
  * Created by Ricardo Garcia on 3/17/2018.
