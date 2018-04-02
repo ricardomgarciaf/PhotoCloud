@@ -9,4 +9,6 @@
     <string name="empty_username">Username cannot be empty</string>
     <string name="empty_password">Password cannot be empty</string>
     <string name="invalid_credentials">Invalid credentials</string>
+    <string name="user_blocked">User blocked. Maximum number of tries exceeded. Please contact your administrator.</string>
+    <string name="network_error">Network issue</string>
 </resources>

@@ -3,7 +3,7 @@
 buildscript {
 
     ext{
-        archRoomVersion = "1.0.0-alpha1"
+        archRoomVersion = "1.0.0"
     }
 
     repositories {

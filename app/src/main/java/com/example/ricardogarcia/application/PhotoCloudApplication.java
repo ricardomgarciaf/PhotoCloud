@@ -13,7 +13,7 @@ import com.squareup.leakcanary.LeakCanary;
 
 public class PhotoCloudApplication extends Application {
 
-    private AppComponent appComponent;
+    private static AppComponent appComponent;
 
     @Override
     public void onCreate() {
@@ -27,8 +27,8 @@ public class PhotoCloudApplication extends Application {
         LeakCanary.install(this);
     }
 
-    public AppComponent getAppComponent(){
-        return this.appComponent;
+    public static AppComponent getAppComponent(){
+        return appComponent;
     }
 
 
