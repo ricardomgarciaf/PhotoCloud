@@ -49,7 +49,7 @@ public class RegisterModel {
                 .subscribe(new Consumer<ServiceResponse>() {
                     @Override
                     public void accept(ServiceResponse serviceResponse) throws Exception {
-                        switch (serviceResponse.getCode()){
+                        switch (serviceResponse.getCode()) {
                             case 1:
                                 listener.onSuccess();
                                 break;
@@ -60,6 +60,14 @@ public class RegisterModel {
                                 listener.onFailure();
                                 break;
                         }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        if(throwable!=null){
+                            throwable.printStackTrace();
+                        }
+                        listener.onFailure();
                     }
                 });
     }

@@ -7,13 +7,9 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class User {
-    @SerializedName("email")
     private String email;
-    @SerializedName("firstName")
     private String firstName;
-    @SerializedName("lastName")
     private String lastName;
-    @SerializedName("password")
     private String password;
 
     public User(String email, String firstName, String lastName, String password) {

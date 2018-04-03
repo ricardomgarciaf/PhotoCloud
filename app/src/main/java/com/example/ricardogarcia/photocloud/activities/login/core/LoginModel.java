@@ -1,5 +1,7 @@
 package com.example.ricardogarcia.photocloud.activities.login.core;
 
+import android.util.Log;
+
 import com.example.ricardogarcia.model.ServiceResponse;
 import com.example.ricardogarcia.photocloud.activities.login.LoginActivity;
 import com.example.ricardogarcia.photocloud.api.PhotoCloudApiInterface;
@@ -15,6 +17,8 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class LoginModel {
+
+    private static final String TAG = "LoginModel";
     LoginActivity context;
     PhotoCloudApiInterface api;
 
@@ -38,7 +42,7 @@ public class LoginModel {
                 .subscribe(new Consumer<ServiceResponse>() {
                     @Override
                     public void accept(ServiceResponse serviceResponse) throws Exception {
-                        switch (serviceResponse.getCode()){
+                        switch (serviceResponse.getCode()) {
                             case 0:
                                 listener.onInvalidCredentials();
                                 break;
@@ -52,6 +56,14 @@ public class LoginModel {
                                 listener.onFailure();
                                 break;
                         }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        if(throwable!=null){
+                            throwable.printStackTrace();
+                        }
+                        listener.onFailure();
                     }
                 });
     }

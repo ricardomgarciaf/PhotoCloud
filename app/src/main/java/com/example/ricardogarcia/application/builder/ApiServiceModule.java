@@ -4,6 +4,7 @@ import com.example.ricardogarcia.photocloud.api.PhotoCloudApiInterface;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -20,7 +21,7 @@ public class ApiServiceModule {
         Retrofit retrofit=new Retrofit.Builder()
                 .baseUrl("http://192.168.0.5:8080/PhotoCloudService/")
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                 .build();
         return retrofit.create(PhotoCloudApiInterface.class);
     }
