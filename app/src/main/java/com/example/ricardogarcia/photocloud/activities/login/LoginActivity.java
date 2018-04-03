@@ -17,6 +17,7 @@ import com.example.ricardogarcia.photocloud.activities.login.core.LoginModel;
 import com.example.ricardogarcia.photocloud.activities.login.core.LoginPresenter;
 import com.example.ricardogarcia.photocloud.activities.login.dagger.DaggerLoginComponent;
 import com.example.ricardogarcia.photocloud.activities.login.dagger.LoginModule;
+import com.example.ricardogarcia.photocloud.activities.register.RegisterActivity;
 
 import javax.inject.Inject;
 
@@ -43,6 +44,8 @@ public class LoginActivity extends AppCompatActivity {
     TextInputLayout passwordWrapper;
     @BindView(R.id.loginButton)
     Button loginButton;
+    @BindView(R.id.registerButton)
+    TextView registerButton;
 
     private MaterialDialog progressDialog;
 
@@ -52,11 +55,11 @@ public class LoginActivity extends AppCompatActivity {
 
         DaggerLoginComponent.builder().appComponent(PhotoCloudApplication.getAppComponent()).loginModule(new LoginModule(this)).build().inject(this);
         setContentView(R.layout.activity_login);
-
-        progressDialog= new MaterialDialog.Builder(this)
-                .title(R.string.loading)
-                .progress(true,0).build();
         ButterKnife.bind(this);
+
+        progressDialog = new MaterialDialog.Builder(this)
+                .title(R.string.loading)
+                .progress(true, 0).build();
         presenter = new LoginPresenter(this, model);
     }
 
@@ -73,35 +76,41 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.loginButton)
-    public void onViewClicked() {
-        presenter.validateCredentials(username.getText().toString(),password.getText().toString());
+    public void onLoginClicked() {
+        presenter.validateCredentials(username.getText().toString(), password.getText().toString());
     }
 
-    public void showProgress(){
+    public void showProgress() {
         progressDialog.show();
     }
 
-    public void hideProgress(){
+    public void hideProgress() {
         progressDialog.dismiss();
     }
 
-    public void setUsernameError(){
+    public void setUsernameError() {
         username.setError(getString(R.string.empty_username));
     }
 
-    public void setPasswordError(){
+    public void setPasswordError() {
         password.setError(getString(R.string.empty_password));
     }
 
-    public void showInvalidCredentials(){
+    public void showInvalidCredentials() {
         Toast.makeText(this, getString(R.string.invalid_credentials), Toast.LENGTH_SHORT).show();
     }
 
-    public void showUserBlocked(){
+    public void showUserBlocked() {
         Toast.makeText(this, getString(R.string.user_blocked), Toast.LENGTH_SHORT).show();
     }
 
-    public void showError(){
+    public void showError() {
         Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+    }
+
+    @OnClick(R.id.registerButton)
+    public void onRegisterClicked() {
+        Intent i = new Intent(this, RegisterActivity.class);
+        startActivity(i);
     }
 }

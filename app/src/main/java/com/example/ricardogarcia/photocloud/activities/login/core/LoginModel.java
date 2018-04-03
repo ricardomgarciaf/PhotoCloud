@@ -24,7 +24,7 @@ public class LoginModel {
     }
 
     Disposable login(String username, String password, final OnLoginFinishedListener listener){
-        if(username.isEmpty()){
+        if(username.isEmpty() || (!username.isEmpty() && !android.util.Patterns.EMAIL_ADDRESS.matcher(username).matches())){
             listener.onUsernameError();
             return null;
         }

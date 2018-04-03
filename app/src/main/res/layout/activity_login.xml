@@ -58,6 +58,14 @@
             android:layout_height="wrap_content"
             android:text="@string/login"/>
 
+        <TextView
+            android:id="@+id/registerButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/register_here"
+            android:layout_gravity="center_horizontal"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"/>
+
     </LinearLayout>
 
 </LinearLayout>

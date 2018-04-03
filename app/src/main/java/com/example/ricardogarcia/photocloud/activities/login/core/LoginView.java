@@ -22,7 +22,7 @@ import butterknife.OnClick;
 /**
  * Created by Ricardo Garcia on 3/30/2018.
  */
-
+@Deprecated
 public class LoginView {
 
     @BindView(R.id.welcome)

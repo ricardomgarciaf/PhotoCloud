@@ -6,7 +6,9 @@ import com.example.ricardogarcia.model.User;
 
 import io.reactivex.Observable;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 /**
@@ -15,8 +17,8 @@ import retrofit2.http.Path;
 
 public interface PhotoCloudApiInterface {
 
-    @GET("user/create")
-    Observable<ServiceResponse> createUser(User user);
+    @POST("user/create")
+    Observable<ServiceResponse> createUser(@Body User user);
 
     @GET("login/{email}/{password}")
     Observable<ServiceResponse> login(@Path("email") String email, @Path("password") String password);
@@ -24,8 +26,8 @@ public interface PhotoCloudApiInterface {
     @GET("album/create/{albumTitle}/{userID}")
     Observable<ServiceResponse> createAlbum(@Path("albumTitle") String albumTitle, @Path("userID") String userID);
 
-    @GET("photo/create")
-    Observable<ServiceResponse> createPhoto(Photo photo);
+    @POST("photo/create")
+    Observable<ServiceResponse> createPhoto(@Body Photo photo);
 
     @GET("photo/{photoID}/delete")
     Observable<ServiceResponse> deletePhoto(@Path("photoID") String photoID);
