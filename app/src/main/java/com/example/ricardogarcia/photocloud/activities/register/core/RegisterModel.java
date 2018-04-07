@@ -1,13 +1,14 @@
 package com.example.ricardogarcia.photocloud.activities.register.core;
 
-import com.example.ricardogarcia.model.ServiceResponse;
-import com.example.ricardogarcia.model.User;
+import com.example.ricardogarcia.photocloud.model.ServiceResponse;
+import com.example.ricardogarcia.photocloud.model.User;
 import com.example.ricardogarcia.photocloud.activities.register.RegisterActivity;
 import com.example.ricardogarcia.photocloud.api.PhotoCloudApiInterface;
+import com.example.ricardogarcia.photocloud.persistence.database.AppDatabase;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -44,31 +45,36 @@ public class RegisterModel {
         }
 
         return api.createUser(new User(email, firstName, lastName, password))
-                .observeOn(Schedulers.io())
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<ServiceResponse>() {
-                    @Override
-                    public void accept(ServiceResponse serviceResponse) throws Exception {
-                        switch (serviceResponse.getCode()) {
-                            case 1:
-                                listener.onSuccess();
-                                break;
-                            case 0:
-                                listener.onAlreadyExistingEmail();
-                                break;
-                            default:
-                                listener.onFailure();
-                                break;
-                        }
+                .flatMap((ServiceResponse serviceResponse) -> {
+                    if(serviceResponse.getCode()==1){
+                        AppDatabase mdb=AppDatabase.getAppDatabase(registerActivity);
+                        mdb.userDao().insert(new com.example.ricardogarcia.photocloud.persistence.entity.User(String.valueOf(serviceResponse.getObject()),email));
                     }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        if(throwable!=null){
-                            throwable.printStackTrace();
-                        }
-                        listener.onFailure();
+                    return Observable.fromArray(serviceResponse.getCode());
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(i -> {
+                    switch (i) {
+                        case 1:
+                            listener.onSuccess();
+                            break;
+                        case 0:
+                            listener.onAlreadyExistingEmail();
+                            break;
+                        default:
+                            listener.onFailure();
+                            break;
                     }
+                }, throwable -> {
+                    if(throwable!=null){
+                        throwable.printStackTrace();
+                    }
+                    listener.onFailure();
                 });
+    }
+
+    public void goToHome(){
+        registerActivity.goHome();
     }
 }

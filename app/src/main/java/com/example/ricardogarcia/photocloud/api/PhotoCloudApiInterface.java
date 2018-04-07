@@ -1,11 +1,10 @@
 package com.example.ricardogarcia.photocloud.api;
 
-import com.example.ricardogarcia.model.Photo;
-import com.example.ricardogarcia.model.ServiceResponse;
-import com.example.ricardogarcia.model.User;
+import com.example.ricardogarcia.photocloud.model.Photo;
+import com.example.ricardogarcia.photocloud.model.ServiceResponse;
+import com.example.ricardogarcia.photocloud.model.User;
 
 import io.reactivex.Observable;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;

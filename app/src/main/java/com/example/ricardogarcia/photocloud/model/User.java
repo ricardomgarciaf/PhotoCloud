@@ -1,6 +1,4 @@
-package com.example.ricardogarcia.model;
-
-import com.google.gson.annotations.SerializedName;
+package com.example.ricardogarcia.photocloud.model;
 
 /**
  * Created by Ricardo Garcia on 3/18/2018.

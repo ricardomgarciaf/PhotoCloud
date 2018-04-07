@@ -10,7 +10,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.example.ricardogarcia.application.PhotoCloudApplication;
 import com.example.ricardogarcia.photocloud.R;
 import com.example.ricardogarcia.photocloud.activities.home.HomeActivity;
 import com.example.ricardogarcia.photocloud.activities.login.core.LoginModel;
@@ -18,6 +17,7 @@ import com.example.ricardogarcia.photocloud.activities.login.core.LoginPresenter
 import com.example.ricardogarcia.photocloud.activities.login.dagger.DaggerLoginComponent;
 import com.example.ricardogarcia.photocloud.activities.login.dagger.LoginModule;
 import com.example.ricardogarcia.photocloud.activities.register.RegisterActivity;
+import com.example.ricardogarcia.photocloud.application.PhotoCloudApplication;
 
 import javax.inject.Inject;
 

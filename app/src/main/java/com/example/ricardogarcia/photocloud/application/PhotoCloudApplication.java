@@ -1,10 +1,10 @@
-package com.example.ricardogarcia.application;
+package com.example.ricardogarcia.photocloud.application;
 
 import android.app.Application;
 
-import com.example.ricardogarcia.application.builder.AppComponent;
-import com.example.ricardogarcia.application.builder.AppModule;
-import com.example.ricardogarcia.application.builder.DaggerAppComponent;
+import com.example.ricardogarcia.photocloud.application.builder.AppComponent;
+import com.example.ricardogarcia.photocloud.application.builder.AppModule;
+import com.example.ricardogarcia.photocloud.application.builder.DaggerAppComponent;
 import com.squareup.leakcanary.LeakCanary;
 
 /**

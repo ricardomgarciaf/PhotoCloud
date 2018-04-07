@@ -9,7 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.example.ricardogarcia.application.PhotoCloudApplication;
+import com.example.ricardogarcia.photocloud.application.PhotoCloudApplication;
 import com.example.ricardogarcia.photocloud.R;
 import com.example.ricardogarcia.photocloud.activities.home.HomeActivity;
 import com.example.ricardogarcia.photocloud.activities.register.core.RegisterModel;

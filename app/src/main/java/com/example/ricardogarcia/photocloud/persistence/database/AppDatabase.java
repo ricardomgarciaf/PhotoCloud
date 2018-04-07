@@ -4,6 +4,7 @@ import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
+import android.os.Environment;
 
 import com.example.ricardogarcia.photocloud.persistence.dao.AlbumDao;
 import com.example.ricardogarcia.photocloud.persistence.dao.PhotoDao;
@@ -11,6 +12,8 @@ import com.example.ricardogarcia.photocloud.persistence.dao.UserDao;
 import com.example.ricardogarcia.photocloud.persistence.entity.Album;
 import com.example.ricardogarcia.photocloud.persistence.entity.Photo;
 import com.example.ricardogarcia.photocloud.persistence.entity.User;
+
+import java.io.File;
 
 /**
  * Created by Ricardo Garcia on 3/18/2018.
@@ -27,7 +30,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public static AppDatabase getAppDatabase(Context context) {
         if (INSTANCE == null) {
-            Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class,
+            INSTANCE=Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class,
                     "photocloud-database").build();
         }
         return INSTANCE;

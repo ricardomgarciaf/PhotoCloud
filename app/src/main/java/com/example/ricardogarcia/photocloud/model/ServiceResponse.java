@@ -1,4 +1,4 @@
-package com.example.ricardogarcia.model;
+package com.example.ricardogarcia.photocloud.model;
 
 /**
  * Created by Ricardo Garcia on 3/18/2018.

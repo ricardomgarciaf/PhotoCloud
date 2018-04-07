@@ -18,6 +18,11 @@ public class User {
     @ColumnInfo(name = "username")
     private String username;
 
+    public User(@NonNull String id, String username) {
+        this.id = id;
+        this.username = username;
+    }
+
     @NonNull
     public String getId() {
         return id;

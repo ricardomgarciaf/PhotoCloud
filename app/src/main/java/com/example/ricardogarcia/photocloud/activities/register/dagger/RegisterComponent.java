@@ -1,6 +1,6 @@
 package com.example.ricardogarcia.photocloud.activities.register.dagger;
 
-import com.example.ricardogarcia.application.builder.AppComponent;
+import com.example.ricardogarcia.photocloud.application.builder.AppComponent;
 import com.example.ricardogarcia.photocloud.activities.register.RegisterActivity;
 
 import dagger.Component;

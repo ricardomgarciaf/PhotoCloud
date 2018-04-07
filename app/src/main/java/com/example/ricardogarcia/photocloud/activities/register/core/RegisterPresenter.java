@@ -76,7 +76,7 @@ public class RegisterPresenter implements OnRegisterFinishedListener{
     public void onSuccess() {
         if(view!=null){
             view.hideProgress();
-            view.goHome();
+            model.goToHome();
         }
     }
 

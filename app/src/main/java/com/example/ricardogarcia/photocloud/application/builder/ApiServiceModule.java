@@ -1,4 +1,4 @@
-package com.example.ricardogarcia.application.builder;
+package com.example.ricardogarcia.photocloud.application.builder;
 
 import com.example.ricardogarcia.photocloud.api.PhotoCloudApiInterface;
 

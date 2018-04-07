@@ -1,8 +1,6 @@
 package com.example.ricardogarcia.photocloud.activities.login.core;
 
-import android.util.Log;
-
-import com.example.ricardogarcia.model.ServiceResponse;
+import com.example.ricardogarcia.photocloud.model.ServiceResponse;
 import com.example.ricardogarcia.photocloud.activities.login.LoginActivity;
 import com.example.ricardogarcia.photocloud.api.PhotoCloudApiInterface;
 
@@ -39,32 +37,26 @@ public class LoginModel {
         return api.login(username, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<ServiceResponse>() {
-                    @Override
-                    public void accept(ServiceResponse serviceResponse) throws Exception {
-                        switch (serviceResponse.getCode()) {
-                            case 0:
-                                listener.onInvalidCredentials();
-                                break;
-                            case 1:
-                                listener.onSuccess();
-                                break;
-                            case 2:
-                                listener.onUserBlocked();
-                                break;
-                            default:
-                                listener.onFailure();
-                                break;
-                        }
+                .subscribe(serviceResponse -> {
+                    switch (serviceResponse.getCode()) {
+                        case 0:
+                            listener.onInvalidCredentials();
+                            break;
+                        case 1:
+                            listener.onSuccess();
+                            break;
+                        case 2:
+                            listener.onUserBlocked();
+                            break;
+                        default:
+                            listener.onFailure();
+                            break;
                     }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        if(throwable!=null){
-                            throwable.printStackTrace();
-                        }
-                        listener.onFailure();
+                }, throwable -> {
+                    if(throwable!=null){
+                        throwable.printStackTrace();
                     }
+                    listener.onFailure();
                 });
     }
 
