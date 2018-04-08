@@ -20,4 +20,6 @@
     <string name="existing_email">There is a user with the same email. Please use another email.</string>
     <string name="register_here">Register here</string>
     <string name="not_granted_permissions">The app won\'t work without required permissions</string>
+    <string name="create_album">Create new album</string>
+    <string name="delete">Delete</string>
 </resources>

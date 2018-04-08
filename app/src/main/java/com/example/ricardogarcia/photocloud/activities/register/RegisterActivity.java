@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.example.ricardogarcia.photocloud.activities.register.core.RegisterView;
 import com.example.ricardogarcia.photocloud.application.PhotoCloudApplication;
 import com.example.ricardogarcia.photocloud.R;
 import com.example.ricardogarcia.photocloud.activities.home.HomeActivity;
@@ -23,7 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity implements RegisterView{
     @Inject
     RegisterModel model;
 
@@ -66,38 +67,47 @@ public class RegisterActivity extends AppCompatActivity {
         presenter.onDestroy();
     }
 
+    @Override
     public void showProgress(){
         progressDialog.show();
     }
 
+    @Override
     public void hideProgress(){
         progressDialog.dismiss();
     }
 
+    @Override
     public void setFirstNameError(){
         firstName.setError(getString(R.string.invalid_field));
     }
 
+    @Override
     public void setLastNameError(){
         lastName.setError(getString(R.string.invalid_field));
     }
 
+    @Override
     public void setEmailError(){
         email.setError(getString(R.string.invalid_field));
     }
 
+    @Override
     public void setPasswordError(){
         password.setError(getString(R.string.invalid_field));
     }
 
+    @Override
     public void showAlreadyExistingEmail(){
         Toast.makeText(this, getString(R.string.existing_email), Toast.LENGTH_SHORT).show();
     }
 
+    @Override
     public void showError(){
         Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
     }
 
+    @Override
     public void goHome(){
         Intent i=new Intent(this,HomeActivity.class);
         finish();

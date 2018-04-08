@@ -5,4 +5,5 @@ package com.example.ricardogarcia.photocloud.activities.home.core;
  */
 
 public class HomeModel {
+
 }

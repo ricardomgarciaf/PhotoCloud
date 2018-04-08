@@ -14,6 +14,7 @@ import com.example.ricardogarcia.photocloud.R;
 import com.example.ricardogarcia.photocloud.activities.home.HomeActivity;
 import com.example.ricardogarcia.photocloud.activities.login.core.LoginModel;
 import com.example.ricardogarcia.photocloud.activities.login.core.LoginPresenter;
+import com.example.ricardogarcia.photocloud.activities.login.core.LoginView;
 import com.example.ricardogarcia.photocloud.activities.login.dagger.DaggerLoginComponent;
 import com.example.ricardogarcia.photocloud.activities.login.dagger.LoginModule;
 import com.example.ricardogarcia.photocloud.activities.register.RegisterActivity;
@@ -25,7 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements LoginView{
 
     @Inject
     LoginModel model;
@@ -80,30 +81,37 @@ public class LoginActivity extends AppCompatActivity {
         presenter.validateCredentials(username.getText().toString(), password.getText().toString());
     }
 
+    @Override
     public void showProgress() {
         progressDialog.show();
     }
 
+    @Override
     public void hideProgress() {
         progressDialog.dismiss();
     }
 
+    @Override
     public void setUsernameError() {
         username.setError(getString(R.string.empty_username));
     }
 
+    @Override
     public void setPasswordError() {
         password.setError(getString(R.string.empty_password));
     }
 
+    @Override
     public void showInvalidCredentials() {
         Toast.makeText(this, getString(R.string.invalid_credentials), Toast.LENGTH_SHORT).show();
     }
 
+    @Override
     public void showUserBlocked() {
         Toast.makeText(this, getString(R.string.user_blocked), Toast.LENGTH_SHORT).show();
     }
 
+    @Override
     public void showError() {
         Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
     }
