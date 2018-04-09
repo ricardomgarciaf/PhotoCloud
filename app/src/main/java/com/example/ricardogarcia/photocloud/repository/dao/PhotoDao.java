@@ -1,11 +1,11 @@
-package com.example.ricardogarcia.photocloud.persistence.dao;
+package com.example.ricardogarcia.photocloud.repository.dao;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
-import com.example.ricardogarcia.photocloud.persistence.entity.Photo;
+import com.example.ricardogarcia.photocloud.repository.entity.Photo;
 
 import java.util.List;
 

@@ -1,27 +1,30 @@
 package com.example.ricardogarcia.photocloud.activities.register.core;
 
-import com.example.ricardogarcia.photocloud.model.ServiceResponse;
-import com.example.ricardogarcia.photocloud.model.User;
 import com.example.ricardogarcia.photocloud.activities.register.RegisterActivity;
 import com.example.ricardogarcia.photocloud.api.PhotoCloudApiInterface;
-import com.example.ricardogarcia.photocloud.persistence.database.AppDatabase;
+import com.example.ricardogarcia.photocloud.model.ServiceResponse;
+import com.example.ricardogarcia.photocloud.model.User;
+import com.example.ricardogarcia.photocloud.repository.datasource.UserDataSource;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 /**
  * Created by Ricardo Garcia on 4/1/2018.
  */
 
 public class RegisterModel {
-    RegisterActivity registerActivity;
-    PhotoCloudApiInterface api;
+    private RegisterActivity registerActivity;
+    private PhotoCloudApiInterface api;
+    private UserDataSource userDataSource;
 
-    public RegisterModel(RegisterActivity registerActivity, PhotoCloudApiInterface api) {
+    public RegisterModel(RegisterActivity registerActivity, PhotoCloudApiInterface api, UserDataSource userDataSource) {
         this.registerActivity = registerActivity;
         this.api = api;
+        this.userDataSource=userDataSource;
     }
 
     Disposable createUser(String firstName, String lastName, String email, String password, final OnRegisterFinishedListener listener){
@@ -46,9 +49,9 @@ public class RegisterModel {
 
         return api.createUser(new User(email, firstName, lastName, password))
                 .flatMap((ServiceResponse serviceResponse) -> {
+                    Timber.d("ServiceResponse "+serviceResponse);
                     if(serviceResponse.getCode()==1){
-                        AppDatabase mdb=AppDatabase.getAppDatabase(registerActivity);
-                        mdb.userDao().insert(new com.example.ricardogarcia.photocloud.persistence.entity.User(String.valueOf(serviceResponse.getObject()),email));
+                        userDataSource.addItem(new com.example.ricardogarcia.photocloud.repository.entity.User(String.valueOf(serviceResponse.getObject()),email));
                     }
                     return Observable.fromArray(serviceResponse.getCode());
                 })

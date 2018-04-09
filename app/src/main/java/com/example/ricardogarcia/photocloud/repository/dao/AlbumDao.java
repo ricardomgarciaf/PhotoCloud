@@ -1,11 +1,11 @@
-package com.example.ricardogarcia.photocloud.persistence.dao;
+package com.example.ricardogarcia.photocloud.repository.dao;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
-import com.example.ricardogarcia.photocloud.persistence.entity.Album;
+import com.example.ricardogarcia.photocloud.repository.entity.Album;
 
 import java.util.List;
 
@@ -20,6 +20,9 @@ public interface AlbumDao {
 
     @Query("SELECT * FROM album where userId=:userId")
     List<Album> getAlbumsByUser(String userId);
+
+    @Query("SELECT COUNT(*) FROM album where name=:albumName")
+    int isAlbumNameRepeated(String albumName);
 
     @Insert
     void insert(Album album);

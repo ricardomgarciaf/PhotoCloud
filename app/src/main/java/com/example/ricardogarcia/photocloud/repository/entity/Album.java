@@ -1,4 +1,4 @@
-package com.example.ricardogarcia.photocloud.persistence.entity;
+package com.example.ricardogarcia.photocloud.repository.entity;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
@@ -23,6 +23,12 @@ public class Album {
 
     @ColumnInfo(name = "userId")
     private String userId;
+
+    public Album(@NonNull String id, String name, String userId) {
+        this.id = id;
+        this.name = name;
+        this.userId = userId;
+    }
 
     @NonNull
     public String getId() {

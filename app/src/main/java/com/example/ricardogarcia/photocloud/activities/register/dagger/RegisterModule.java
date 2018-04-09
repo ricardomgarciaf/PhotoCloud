@@ -3,6 +3,7 @@ package com.example.ricardogarcia.photocloud.activities.register.dagger;
 import com.example.ricardogarcia.photocloud.activities.register.RegisterActivity;
 import com.example.ricardogarcia.photocloud.activities.register.core.RegisterModel;
 import com.example.ricardogarcia.photocloud.api.PhotoCloudApiInterface;
+import com.example.ricardogarcia.photocloud.repository.datasource.UserDataSource;
 
 import dagger.Module;
 import dagger.Provides;
@@ -26,7 +27,7 @@ public class RegisterModule {
 
     @RegisterScope
     @Provides
-    RegisterModel provideModel(PhotoCloudApiInterface api){
-        return new RegisterModel(registerActivity,api);
+    RegisterModel provideModel(PhotoCloudApiInterface api, UserDataSource userDataSource){
+        return new RegisterModel(registerActivity,api,userDataSource);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.ricardogarcia.photocloud.activities.login.core;
 
+import com.example.ricardogarcia.photocloud.application.PhotoCloudApplication;
 import com.example.ricardogarcia.photocloud.model.ServiceResponse;
 import com.example.ricardogarcia.photocloud.activities.login.LoginActivity;
 import com.example.ricardogarcia.photocloud.api.PhotoCloudApiInterface;
@@ -8,6 +9,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 
 /**
@@ -16,9 +18,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class LoginModel {
 
-    private static final String TAG = "LoginModel";
-    LoginActivity context;
-    PhotoCloudApiInterface api;
+    private LoginActivity context;
+    private PhotoCloudApiInterface api;
 
     public LoginModel(LoginActivity context, PhotoCloudApiInterface api) {
         this.context = context;
@@ -38,11 +39,14 @@ public class LoginModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(serviceResponse -> {
+                    Timber.d("ServiceResponse "+serviceResponse.getCode());
                     switch (serviceResponse.getCode()) {
                         case 0:
                             listener.onInvalidCredentials();
                             break;
                         case 1:
+                            PhotoCloudApplication.editor.putString(PhotoCloudApplication.KEY_USER,username);
+                            PhotoCloudApplication.editor.commit();
                             listener.onSuccess();
                             break;
                         case 2:

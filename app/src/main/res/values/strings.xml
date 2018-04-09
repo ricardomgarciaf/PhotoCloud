@@ -22,4 +22,9 @@
     <string name="not_granted_permissions">The app won\'t work without required permissions</string>
     <string name="create_album">Create new album</string>
     <string name="delete">Delete</string>
+    <string name="enter_album_name">Please enter album name</string>
+    <string name="album_hint">Album</string>
+    <string name="input_prefill">Test</string>
+    <string name="existing_album_name">There is an existing album with same name</string>
+    <string name="empty_album">The album must have a title</string>
 </resources>

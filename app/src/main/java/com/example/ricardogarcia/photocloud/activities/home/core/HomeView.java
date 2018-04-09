@@ -9,4 +9,8 @@ public interface HomeView {
     void hideProgress();
 
     void showProgress();
+
+    void showExistingAlbumName();
+
+    void showAlbumError();
 }

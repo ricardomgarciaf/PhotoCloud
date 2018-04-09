@@ -11,7 +11,6 @@ import io.reactivex.disposables.Disposable;
 
 public class LoginPresenter implements OnLoginFinishedListener{
 
-    private static final String TAG = "LoginPresenter";
     private Disposable disposable;
     private LoginActivity view;
     private LoginModel model;
