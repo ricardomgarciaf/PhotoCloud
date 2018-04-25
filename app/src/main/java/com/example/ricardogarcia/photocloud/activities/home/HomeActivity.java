@@ -91,17 +91,18 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         Toast.makeText(this, getString(R.string.empty_album), Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onAlbumCreated() {
+        inputDialog.dismiss();
+    }
+
     private void createAlbum() {
-        new MaterialDialog.Builder(this)
+        inputDialog = new MaterialDialog.Builder(this)
                 .title(R.string.create_album)
                 .content(R.string.enter_album_name)
                 .inputType(InputType.TYPE_CLASS_TEXT)
-                .input(R.string.album_hint, R.string.input_prefill, new MaterialDialog.InputCallback() {
-                    @Override
-                    public void onInput(MaterialDialog dialog, CharSequence input) {
-                        presenter.createAlbum(input.toString());
-                    }
-                }).show();
+                .autoDismiss(false)
+                .input(getString(R.string.album_hint), "", (dialog, input) -> presenter.createAlbum(input.toString())).show();
     }
 
     @Override

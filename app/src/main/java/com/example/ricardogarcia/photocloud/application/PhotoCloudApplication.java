@@ -3,6 +3,7 @@ package com.example.ricardogarcia.photocloud.application;
 import android.app.Application;
 import android.content.SharedPreferences;
 
+import com.crashlytics.android.Crashlytics;
 import com.example.ricardogarcia.photocloud.BuildConfig;
 import com.example.ricardogarcia.photocloud.application.builder.AppComponent;
 import com.example.ricardogarcia.photocloud.application.builder.AppModule;
@@ -10,6 +11,7 @@ import com.example.ricardogarcia.photocloud.application.builder.DaggerAppCompone
 import com.example.ricardogarcia.photocloud.application.builder.RoomModule;
 import com.squareup.leakcanary.LeakCanary;
 
+import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 
 /**
@@ -29,6 +31,7 @@ public class PhotoCloudApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         this.appComponent= DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
                 .roomModule(new RoomModule(this))
@@ -36,13 +39,6 @@ public class PhotoCloudApplication extends Application {
 
         if(BuildConfig.DEBUG){
             Timber.plant(new Timber.DebugTree());
-        }else{
-            Timber.plant(new Timber.Tree() {
-                @Override
-                protected void log(int priority, String tag, String message, Throwable t) {
-
-                }
-            });
         }
 
         if(LeakCanary.isInAnalyzerProcess(this)){

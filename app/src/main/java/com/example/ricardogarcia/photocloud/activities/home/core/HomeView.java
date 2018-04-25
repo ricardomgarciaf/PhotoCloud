@@ -13,4 +13,6 @@ public interface HomeView {
     void showExistingAlbumName();
 
     void showAlbumError();
+
+    void onAlbumCreated();
 }

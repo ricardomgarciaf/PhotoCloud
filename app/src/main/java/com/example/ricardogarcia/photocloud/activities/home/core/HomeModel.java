@@ -6,13 +6,11 @@ import android.os.Looper;
 import com.example.ricardogarcia.photocloud.activities.home.HomeActivity;
 import com.example.ricardogarcia.photocloud.api.PhotoCloudApiInterface;
 import com.example.ricardogarcia.photocloud.application.PhotoCloudApplication;
-import com.example.ricardogarcia.photocloud.model.ServiceResponse;
 import com.example.ricardogarcia.photocloud.repository.datasource.AlbumDataSource;
 import com.example.ricardogarcia.photocloud.repository.datasource.UserDataSource;
 import com.example.ricardogarcia.photocloud.repository.entity.Album;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -87,4 +85,6 @@ public class HomeModel {
                     listener.onFailure();
                 });
     }
+
+
 }

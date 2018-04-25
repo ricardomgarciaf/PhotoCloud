@@ -46,7 +46,9 @@ public class HomePresenter implements OnHomeListener{
 
     @Override
     public void onSucces() {
-
+        if(view!=null){
+            view.onAlbumCreated();
+        }
     }
 
     @Override

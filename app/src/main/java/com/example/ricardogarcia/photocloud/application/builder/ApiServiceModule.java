@@ -19,7 +19,7 @@ public class ApiServiceModule {
     @Provides
     public PhotoCloudApiInterface apiServiceModule(){
         Retrofit retrofit=new Retrofit.Builder()
-                .baseUrl("http://192.168.0.5:8080/PhotoCloudService/")
+                .baseUrl("http://192.168.0.9:8080/PhotoCloudService/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                 .build();
