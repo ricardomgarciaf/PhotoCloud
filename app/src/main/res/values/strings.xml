@@ -27,4 +27,5 @@
     <string name="input_prefill">Test</string>
     <string name="existing_album_name">There is an existing album with same name</string>
     <string name="empty_album">The album must have a title</string>
+    <string name="photos">Photos</string>
 </resources>

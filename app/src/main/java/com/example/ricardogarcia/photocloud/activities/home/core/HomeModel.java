@@ -4,11 +4,19 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.example.ricardogarcia.photocloud.activities.home.HomeActivity;
+import com.example.ricardogarcia.photocloud.activities.home.list.Function;
 import com.example.ricardogarcia.photocloud.api.PhotoCloudApiInterface;
 import com.example.ricardogarcia.photocloud.application.PhotoCloudApplication;
 import com.example.ricardogarcia.photocloud.repository.datasource.AlbumDataSource;
+import com.example.ricardogarcia.photocloud.repository.datasource.PhotoDataSource;
 import com.example.ricardogarcia.photocloud.repository.datasource.UserDataSource;
 import com.example.ricardogarcia.photocloud.repository.entity.Album;
+import com.example.ricardogarcia.photocloud.repository.entity.Photo;
+import com.example.ricardogarcia.photocloud.utils.UiUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -25,13 +33,15 @@ public class HomeModel {
     private PhotoCloudApiInterface api;
     private AlbumDataSource albumDataSource;
     private UserDataSource userDataSource;
+    private PhotoDataSource photoDataSource;
     private String userId;
 
-    public HomeModel(HomeActivity homeActivity, PhotoCloudApiInterface api, AlbumDataSource albumDataSource, UserDataSource userDataSource) {
+    public HomeModel(HomeActivity homeActivity, PhotoCloudApiInterface api, AlbumDataSource albumDataSource, UserDataSource userDataSource, PhotoDataSource photoDataSource) {
         this.homeActivity = homeActivity;
         this.api = api;
         this.albumDataSource = albumDataSource;
         this.userDataSource = userDataSource;
+        this.photoDataSource = photoDataSource;
     }
 
     Disposable createAlbum(String albumName, OnHomeListener listener) {
@@ -49,7 +59,7 @@ public class HomeModel {
                                 listener.onExistingAlbumName();
                             }
                         });
-                    }else{
+                    } else {
                         Timber.d("Album name no repeated");
                     }
                 })
@@ -60,6 +70,7 @@ public class HomeModel {
                     return api.createAlbum(albumName, userId);
                 })
                 .map(serviceResponse -> {
+                    Timber.d("Service response->" + serviceResponse.getCode());
                     if (serviceResponse.getCode() == 1) {
                         albumDataSource.addItem(new Album(serviceResponse.getObject().toString(), albumName, userId));
                         Timber.d("added to local DB");
@@ -79,11 +90,28 @@ public class HomeModel {
                             break;
                     }
                 }, throwable -> {
-                    if (throwable != null) {
-                        throwable.printStackTrace();
-                    }
+                    UiUtils.logThrowable(throwable);
                     listener.onFailure();
                 });
+    }
+
+    Observable<List<HashMap<String, String>>> provideAlbumList() {
+        List<HashMap<String, String>> albumMap = new ArrayList<>();
+        return Observable.just(albumDataSource)
+                .map(d -> {
+                    String userId = userDataSource.findByName(PhotoCloudApplication.pref.getString(PhotoCloudApplication.KEY_USER, "")).getId();
+                    List<Album> albums = d.getAlbumsByUser(userId);
+                    albums.forEach(a -> {
+                        List<Photo> photosByAlbum = photoDataSource.getPhotosByAlbum(a.getId());
+                        albumMap.add(Function.mappingInbox(a.getName(), photosByAlbum.size() > 0 ? photosByAlbum.get(0).getSource() : null, String.valueOf(photosByAlbum.size())));
+                    });
+                    return albumMap;
+                }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public void goAlbumDescription(HashMap<String,String> albumSelected){
+        Timber.d("Album selected"+albumSelected.get(Function.KEY_ALBUM));
     }
 
 

@@ -103,17 +103,17 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
 
     @Override
     public void showInvalidCredentials() {
-        Toast.makeText(this, getString(R.string.invalid_credentials), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.invalid_credentials), Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void showUserBlocked() {
-        Toast.makeText(this, getString(R.string.user_blocked), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.user_blocked), Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void showError() {
-        Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_LONG).show();
     }
 
     @OnClick(R.id.registerButton)

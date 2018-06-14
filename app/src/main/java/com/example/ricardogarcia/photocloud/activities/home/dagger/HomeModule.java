@@ -4,6 +4,7 @@ import com.example.ricardogarcia.photocloud.activities.home.HomeActivity;
 import com.example.ricardogarcia.photocloud.activities.home.core.HomeModel;
 import com.example.ricardogarcia.photocloud.api.PhotoCloudApiInterface;
 import com.example.ricardogarcia.photocloud.repository.datasource.AlbumDataSource;
+import com.example.ricardogarcia.photocloud.repository.datasource.PhotoDataSource;
 import com.example.ricardogarcia.photocloud.repository.datasource.UserDataSource;
 
 import dagger.Module;
@@ -28,7 +29,7 @@ public class HomeModule {
 
     @HomeScope
     @Provides
-    HomeModel provideModel(PhotoCloudApiInterface api, AlbumDataSource albumDataSource, UserDataSource userDataSource){
-        return new HomeModel(homeActivity,api,albumDataSource,userDataSource);
+    HomeModel provideModel(PhotoCloudApiInterface api, AlbumDataSource albumDataSource, UserDataSource userDataSource, PhotoDataSource photoDataSource){
+        return new HomeModel(homeActivity,api,albumDataSource,userDataSource,photoDataSource);
     }
 }

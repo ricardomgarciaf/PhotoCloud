@@ -58,7 +58,7 @@ public class LoginModel {
                     }
                 }, throwable -> {
                     if(throwable!=null){
-                        throwable.printStackTrace();
+                        Timber.e(throwable);
                     }
                     listener.onFailure();
                 });

@@ -1,10 +1,13 @@
 package com.example.ricardogarcia.photocloud.activities.home;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,12 +20,19 @@ import com.example.ricardogarcia.photocloud.activities.home.core.HomePresenter;
 import com.example.ricardogarcia.photocloud.activities.home.core.HomeView;
 import com.example.ricardogarcia.photocloud.activities.home.dagger.DaggerHomeComponent;
 import com.example.ricardogarcia.photocloud.activities.home.dagger.HomeModule;
+import com.example.ricardogarcia.photocloud.activities.home.list.AlbumAdapter;
+import com.example.ricardogarcia.photocloud.activities.home.list.ItemOffsetDecoration;
 import com.example.ricardogarcia.photocloud.application.PhotoCloudApplication;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
 
 public class HomeActivity extends AppCompatActivity implements HomeView {
 
@@ -38,6 +48,52 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
 
     private MaterialDialog inputDialog;
 
+    private AlbumAdapter adapter;
+
+    private ArrayList<Integer> selectedItems;
+
+    private boolean actionModeVisible=false;
+
+    private ActionMode actionMode;
+
+    public boolean isActionModeVisible() {
+        return actionModeVisible;
+    }
+
+    public void setActionModeVisible(boolean actionModeVisible) {
+        this.actionModeVisible = actionModeVisible;
+    }
+
+    private ActionMode.Callback actionModeCallback= new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+            MenuInflater inflater=actionMode.getMenuInflater();
+            inflater.inflate(R.menu.context_home_menu,menu);
+            actionModeVisible=true;
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+            //TODO delete items
+            actionMode.finish();
+            return true;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode actionMode) {
+            actionMode=null;
+            actionModeVisible=false;
+            selectedItems.clear();
+            //TODO notify data changed
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +106,15 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
                 .title(R.string.loading)
                 .progress(true, 0).build();
 
-        presenter= new HomePresenter(this,model);
+        recyclerViewGallery.setLayoutManager(new GridLayoutManager(this, 2));
+        ItemOffsetDecoration itemOffsetDecoration = new ItemOffsetDecoration(this, R.dimen.offset);
+        recyclerViewGallery.addItemDecoration(itemOffsetDecoration);
+
+        adapter = new AlbumAdapter();
+        recyclerViewGallery.setAdapter(adapter);
+
+        presenter = new HomePresenter(this, model);
+        presenter.onCreate();
     }
 
     @Override
@@ -103,6 +167,23 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
                 .inputType(InputType.TYPE_CLASS_TEXT)
                 .autoDismiss(false)
                 .input(getString(R.string.album_hint), "", (dialog, input) -> presenter.createAlbum(input.toString())).show();
+    }
+
+    public void loadAlbums(List<HashMap<String, String>> albumMaps) {
+        adapter.swapData(albumMaps);
+    }
+
+    public Observable<Integer> albumItemClicks() {
+        return adapter.observeAlbumItemClicks();
+    }
+
+    public Observable<Integer> albumLongItemClicks() {
+        return adapter.observeAlbumLongItemClicks();
+    }
+
+    public void selectAlbumLongItem(int position){
+        actionMode=startActionMode(actionModeCallback);
+        adapter.selectItem(position);
     }
 
     @Override

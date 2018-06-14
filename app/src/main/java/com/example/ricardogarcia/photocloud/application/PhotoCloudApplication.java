@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.SharedPreferences;
 
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.core.CrashlyticsCore;
 import com.example.ricardogarcia.photocloud.BuildConfig;
 import com.example.ricardogarcia.photocloud.application.builder.AppComponent;
 import com.example.ricardogarcia.photocloud.application.builder.AppModule;
@@ -31,7 +32,11 @@ public class PhotoCloudApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
+        CrashlyticsCore core= new CrashlyticsCore.Builder()
+                .disabled(BuildConfig.DEBUG)
+                .build();
+        Fabric.with(this, new Crashlytics.Builder().core(core).build());
+
         this.appComponent= DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
                 .roomModule(new RoomModule(this))

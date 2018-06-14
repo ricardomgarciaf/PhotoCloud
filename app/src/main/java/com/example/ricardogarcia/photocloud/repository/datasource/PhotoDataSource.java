@@ -38,4 +38,8 @@ public class PhotoDataSource implements DataSource<Photo> {
     public List<Photo> getPhotosByAlbum(String album){
         return photoDao.getPhotosByAlbum(album);
     }
+
+    public int getNumberOfPhotosByAlbum(String album){
+        return photoDao.getPhotosByAlbum(album).size();
+    }
 }
