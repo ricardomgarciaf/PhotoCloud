@@ -80,7 +80,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
 
         @Override
         public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
-            //TODO delete items
+            presenter.deleteSelectedItems(selectedItems);
             actionMode.finish();
             return true;
         }
@@ -90,7 +90,6 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
             actionMode=null;
             actionModeVisible=false;
             selectedItems.clear();
-            //TODO notify data changed
         }
     };
 
@@ -101,6 +100,8 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         ButterKnife.bind(this);
 
         DaggerHomeComponent.builder().appComponent(PhotoCloudApplication.getAppComponent()).homeModule(new HomeModule(this)).build().inject(this);
+
+        selectedItems= new ArrayList<>();
 
         progressDialog = new MaterialDialog.Builder(this)
                 .title(R.string.loading)
@@ -183,8 +184,22 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
 
     public void selectAlbumLongItem(int position){
         actionMode=startActionMode(actionModeCallback);
+        selectedItems.add(position);
         adapter.selectItem(position);
+        actionMode.setTitle(String.valueOf(selectedItems.size()));
     }
+
+    public void selectAlbumItem(int position){
+        if (selectedItems.contains(position)) {
+            selectedItems.remove(position);
+        } else {
+            selectedItems.add(position);
+        }
+        adapter.selectItem(position);
+        actionMode.setTitle(String.valueOf(selectedItems.size()));
+    }
+
+
 
     @Override
     protected void onDestroy() {

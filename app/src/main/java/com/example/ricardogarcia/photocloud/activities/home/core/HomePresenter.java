@@ -89,12 +89,17 @@ public class HomePresenter implements OnHomeListener {
             if(!view.isActionModeVisible()) {
                 model.goAlbumDescription(albumsList.get(integer));
             }else{
-                view.selectAlbumLongItem(integer);
+                view.selectAlbumItem(integer);
             }
         });
     }
 
     private Disposable getAlbumLongItemClicked(){
         return view.albumLongItemClicks().subscribe(view::selectAlbumLongItem);
+    }
+
+    public void deleteSelectedItems(List<Integer> selectedItems){
+        selectedItems.forEach(i->albumsList.remove(i));
+        view.loadAlbums(albumsList);
     }
 }
