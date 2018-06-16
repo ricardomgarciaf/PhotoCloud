@@ -50,18 +50,12 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
 
     private AlbumAdapter adapter;
 
-    private ArrayList<Integer> selectedItems;
-
     private boolean actionModeVisible=false;
 
     private ActionMode actionMode;
 
     public boolean isActionModeVisible() {
         return actionModeVisible;
-    }
-
-    public void setActionModeVisible(boolean actionModeVisible) {
-        this.actionModeVisible = actionModeVisible;
     }
 
     private ActionMode.Callback actionModeCallback= new ActionMode.Callback() {
@@ -80,7 +74,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
 
         @Override
         public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
-            presenter.deleteSelectedItems(selectedItems);
+            presenter.deleteSelectedItems(adapter.getSelectedItems());
             actionMode.finish();
             return true;
         }
@@ -89,7 +83,8 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         public void onDestroyActionMode(ActionMode actionMode) {
             actionMode=null;
             actionModeVisible=false;
-            selectedItems.clear();
+            adapter.clearSelectedItems();
+
         }
     };
 
@@ -100,8 +95,6 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         ButterKnife.bind(this);
 
         DaggerHomeComponent.builder().appComponent(PhotoCloudApplication.getAppComponent()).homeModule(new HomeModule(this)).build().inject(this);
-
-        selectedItems= new ArrayList<>();
 
         progressDialog = new MaterialDialog.Builder(this)
                 .title(R.string.loading)
@@ -184,22 +177,20 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
 
     public void selectAlbumLongItem(int position){
         actionMode=startActionMode(actionModeCallback);
-        selectedItems.add(position);
+        adapter.addSelectedItem(position);
         adapter.selectItem(position);
-        actionMode.setTitle(String.valueOf(selectedItems.size()));
+        actionMode.setTitle(String.valueOf(adapter.getSelectedItemsSize()));
     }
 
     public void selectAlbumItem(int position){
-        if (selectedItems.contains(position)) {
-            selectedItems.remove(position);
+        if (adapter.isItemInSelectedItem(position)) {
+            adapter.removeSelectedItem(position);
         } else {
-            selectedItems.add(position);
+            adapter.addSelectedItem(position);
         }
         adapter.selectItem(position);
-        actionMode.setTitle(String.valueOf(selectedItems.size()));
+        actionMode.setTitle(String.valueOf(adapter.getSelectedItemsSize()));
     }
-
-
 
     @Override
     protected void onDestroy() {

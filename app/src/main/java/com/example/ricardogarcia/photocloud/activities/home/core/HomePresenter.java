@@ -1,6 +1,7 @@
 package com.example.ricardogarcia.photocloud.activities.home.core;
 
 import com.example.ricardogarcia.photocloud.activities.home.HomeActivity;
+import com.example.ricardogarcia.photocloud.activities.home.list.Function;
 import com.example.ricardogarcia.photocloud.utils.UiUtils;
 
 
@@ -24,6 +25,7 @@ public class HomePresenter implements OnHomeListener {
     private HomeModel model;
     private CompositeDisposable disposables;
     private List<HashMap<String, String>> albumsList;
+    private List<Integer> selectedItems;
 
     public HomePresenter(HomeActivity view, HomeModel model) {
         this.view = view;
@@ -46,6 +48,13 @@ public class HomePresenter implements OnHomeListener {
     }
 
     @Override
+    public void onAlbumsDeleted(List<String> selectedItems) {
+        albumsList.removeIf(album->selectedItems.contains(album.get(Function.KEY_ALBUM)));
+        //selectedItems.forEach(i -> albumsList.remove((int) i));
+        view.loadAlbums(albumsList);
+    }
+
+    @Override
     public void onAlbumNameError() {
         if (view != null) {
             view.showAlbumError();
@@ -63,6 +72,8 @@ public class HomePresenter implements OnHomeListener {
     public void onSucces() {
         if (view != null) {
             view.onAlbumCreated();
+            disposables.clear();
+            onCreate();
         }
     }
 
@@ -86,20 +97,21 @@ public class HomePresenter implements OnHomeListener {
 
     private Disposable getAlbumItemClicked() {
         return view.albumItemClicks().subscribe(integer -> {
-            if(!view.isActionModeVisible()) {
+            if (!view.isActionModeVisible()) {
                 model.goAlbumDescription(albumsList.get(integer));
-            }else{
+            } else {
                 view.selectAlbumItem(integer);
             }
         });
     }
 
-    private Disposable getAlbumLongItemClicked(){
+    private Disposable getAlbumLongItemClicked() {
         return view.albumLongItemClicks().subscribe(view::selectAlbumLongItem);
     }
 
-    public void deleteSelectedItems(List<Integer> selectedItems){
-        selectedItems.forEach(i->albumsList.remove(i));
-        view.loadAlbums(albumsList);
+    public void deleteSelectedItems(List<Integer> selectedItems) {
+        List<String> albumNames = new ArrayList<>();
+        selectedItems.forEach(i->albumNames.add(albumsList.get(i).get(Function.KEY_ALBUM)));
+        model.deleteAlbum(albumNames, this);
     }
 }

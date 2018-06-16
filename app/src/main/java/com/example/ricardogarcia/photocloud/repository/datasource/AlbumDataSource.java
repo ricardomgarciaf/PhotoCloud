@@ -35,11 +35,15 @@ public class AlbumDataSource implements DataSource<Album> {
         albumDao.delete(item);
     }
 
+    public void deleteItemByName(String name, String userId){
+        albumDao.deleteAlbumByName(name, userId);
+    }
+
     public List<Album> getAlbumsByUser(String user){
         return albumDao.getAlbumsByUser(user);
     }
 
-    public boolean isAlbumNameRepeated(String albumName){
-        return albumDao.isAlbumNameRepeated(albumName)==1;
+    public boolean isAlbumNameRepeated(String albumName,String userId){
+        return albumDao.isAlbumNameRepeated(albumName,userId)==1;
     }
 }

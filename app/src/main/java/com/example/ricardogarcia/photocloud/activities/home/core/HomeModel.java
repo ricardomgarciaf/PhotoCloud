@@ -7,6 +7,7 @@ import com.example.ricardogarcia.photocloud.activities.home.HomeActivity;
 import com.example.ricardogarcia.photocloud.activities.home.list.Function;
 import com.example.ricardogarcia.photocloud.api.PhotoCloudApiInterface;
 import com.example.ricardogarcia.photocloud.application.PhotoCloudApplication;
+import com.example.ricardogarcia.photocloud.model.ServiceResponse;
 import com.example.ricardogarcia.photocloud.repository.datasource.AlbumDataSource;
 import com.example.ricardogarcia.photocloud.repository.datasource.PhotoDataSource;
 import com.example.ricardogarcia.photocloud.repository.datasource.UserDataSource;
@@ -17,6 +18,7 @@ import com.example.ricardogarcia.photocloud.utils.UiUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -49,7 +51,10 @@ public class HomeModel {
             listener.onAlbumNameError();
             return null;
         }
-        return Observable.fromCallable(() -> albumDataSource.isAlbumNameRepeated(albumName))
+        return Observable.fromCallable(() -> {
+            userId = userDataSource.findByName(PhotoCloudApplication.pref.getString(PhotoCloudApplication.KEY_USER, "")).getId();
+            return albumDataSource.isAlbumNameRepeated(albumName, userId);
+        })
                 .doOnNext(albumRepeated -> {
                     if (albumRepeated) {
                         Timber.d("Album name repeated");
@@ -66,7 +71,6 @@ public class HomeModel {
                 .filter(albumRepeated -> !albumRepeated)
                 .flatMap(aBoolean -> {
                     Timber.d("FlatMap");
-                    userId = userDataSource.findByName(PhotoCloudApplication.pref.getString(PhotoCloudApplication.KEY_USER, "")).getId();
                     return api.createAlbum(albumName, userId);
                 })
                 .map(serviceResponse -> {
@@ -97,21 +101,47 @@ public class HomeModel {
 
     Observable<List<HashMap<String, String>>> provideAlbumList() {
         List<HashMap<String, String>> albumMap = new ArrayList<>();
-        return Observable.just(albumDataSource)
-                .map(d -> {
-                    String userId = userDataSource.findByName(PhotoCloudApplication.pref.getString(PhotoCloudApplication.KEY_USER, "")).getId();
-                    List<Album> albums = d.getAlbumsByUser(userId);
-                    albums.forEach(a -> {
-                        List<Photo> photosByAlbum = photoDataSource.getPhotosByAlbum(a.getId());
-                        albumMap.add(Function.mappingInbox(a.getName(), photosByAlbum.size() > 0 ? photosByAlbum.get(0).getSource() : null, String.valueOf(photosByAlbum.size())));
-                    });
-                    return albumMap;
-                }).subscribeOn(Schedulers.io())
+        return Observable.fromCallable(() -> {
+            String userId = userDataSource.findByName(PhotoCloudApplication.pref.getString(PhotoCloudApplication.KEY_USER, "")).getId();
+            List<Album> albums = albumDataSource.getAlbumsByUser(userId);
+            albums.forEach(a -> {
+                List<Photo> photosByAlbum = photoDataSource.getPhotosByAlbum(a.getId());
+                albumMap.add(Function.mappingInbox(a.getName(), photosByAlbum.size() > 0 ? photosByAlbum.get(0).getSource() : null, String.valueOf(photosByAlbum.size())));
+            });
+            return albumMap;
+        }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public void goAlbumDescription(HashMap<String,String> albumSelected){
-        Timber.d("Album selected"+albumSelected.get(Function.KEY_ALBUM));
+    Disposable deleteAlbum(List<String> albumNames, OnHomeListener listener) {
+        return Observable.fromCallable(() -> {
+            String userId = userDataSource.findByName(PhotoCloudApplication.pref.getString(PhotoCloudApplication.KEY_USER, "")).getId();
+            return albumDataSource.getAlbumsByUser(userId).stream().filter(a -> albumNames.contains(a.getName())).map(Album::getId).collect(Collectors.toList());
+        }).flatMap(albums -> api.deleteAlbums(albums, userId))
+                .map(serviceResponse -> {
+                    if (serviceResponse.getCode() == 1) {
+                        albumNames.forEach(albumName -> albumDataSource.deleteItemByName(albumName, userId));
+                    }
+                    return serviceResponse.getCode();
+                }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(code -> {
+                    switch (code) {
+                        case 1:
+                            listener.onAlbumsDeleted(albumNames);
+                            break;
+                        default:
+                            listener.onFailure();
+                            break;
+                    }
+                }, throwable -> {
+                    UiUtils.logThrowable(throwable);
+                    listener.onFailure();
+                });
+    }
+
+    public void goAlbumDescription(HashMap<String, String> albumSelected) {
+        Timber.d("Album selected" + albumSelected.get(Function.KEY_ALBUM));
     }
 
 

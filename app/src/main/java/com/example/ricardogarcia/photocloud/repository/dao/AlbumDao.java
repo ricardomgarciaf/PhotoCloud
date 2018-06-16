@@ -21,12 +21,15 @@ public interface AlbumDao {
     @Query("SELECT * FROM album where userId=:userId")
     List<Album> getAlbumsByUser(String userId);
 
-    @Query("SELECT COUNT(*) FROM album where name=:albumName")
-    int isAlbumNameRepeated(String albumName);
+    @Query("SELECT COUNT(*) FROM album where name=:albumName AND userId=:userId")
+    int isAlbumNameRepeated(String albumName, String userId);
 
     @Insert
     void insert(Album album);
 
     @Delete
     void delete(Album album);
+
+    @Query("DELETE FROM album WHERE name=:albumName AND userId=:userId")
+    void deleteAlbumByName(String albumName, String userId);
 }

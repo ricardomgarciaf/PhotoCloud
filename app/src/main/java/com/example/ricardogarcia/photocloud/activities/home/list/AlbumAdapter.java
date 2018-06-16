@@ -69,4 +69,29 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumHolder> {
     public void selectItem(int position){
         holders.get(position).select();
     }
+
+    public void clearSelectedItems() {
+        selectedItems.clear();
+        notifyDataSetChanged();
+    }
+
+    public void addSelectedItem(int position) {
+        selectedItems.add(position);
+    }
+
+    public void removeSelectedItem(int position) {
+        selectedItems.remove(position);
+    }
+
+    public boolean isItemInSelectedItem(int position){
+        return selectedItems.contains(position);
+    }
+
+    public int getSelectedItemsSize(){
+        return selectedItems.size();
+    }
+
+    public ArrayList<Integer> getSelectedItems() {
+        return selectedItems;
+    }
 }

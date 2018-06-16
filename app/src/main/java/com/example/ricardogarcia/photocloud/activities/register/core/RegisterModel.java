@@ -2,6 +2,7 @@ package com.example.ricardogarcia.photocloud.activities.register.core;
 
 import com.example.ricardogarcia.photocloud.activities.register.RegisterActivity;
 import com.example.ricardogarcia.photocloud.api.PhotoCloudApiInterface;
+import com.example.ricardogarcia.photocloud.application.PhotoCloudApplication;
 import com.example.ricardogarcia.photocloud.model.ServiceResponse;
 import com.example.ricardogarcia.photocloud.model.User;
 import com.example.ricardogarcia.photocloud.repository.datasource.UserDataSource;
@@ -60,6 +61,8 @@ public class RegisterModel {
                 .subscribe(i -> {
                     switch (i) {
                         case 1:
+                            PhotoCloudApplication.editor.putString(PhotoCloudApplication.KEY_USER,email);
+                            PhotoCloudApplication.editor.commit();
                             listener.onSuccess();
                             break;
                         case 0:
