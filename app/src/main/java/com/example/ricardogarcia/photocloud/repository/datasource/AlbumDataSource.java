@@ -46,4 +46,8 @@ public class AlbumDataSource implements DataSource<Album> {
     public boolean isAlbumNameRepeated(String albumName,String userId){
         return albumDao.isAlbumNameRepeated(albumName,userId)==1;
     }
+
+    public Album getAlbumByName(String albumName, String userId){
+        return albumDao.getAlbumByName(albumName,userId);
+    }
 }

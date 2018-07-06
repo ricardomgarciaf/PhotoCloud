@@ -11,6 +11,7 @@ import com.example.ricardogarcia.photocloud.repository.database.AppDatabase;
 import com.example.ricardogarcia.photocloud.repository.datasource.AlbumDataSource;
 import com.example.ricardogarcia.photocloud.repository.datasource.PhotoDataSource;
 import com.example.ricardogarcia.photocloud.repository.datasource.UserDataSource;
+import com.example.ricardogarcia.photocloud.repository.migration.Migrations;
 
 import java.io.File;
 
@@ -27,7 +28,8 @@ public class RoomModule {
 
     public RoomModule(Context context){
         appDatabase= Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class,
-                Environment.getExternalStorageDirectory()+ File.separator+"photocloud-database").build();
+                Environment.getExternalStorageDirectory()+ File.separator+"photocloud-database")
+                .addMigrations(Migrations.MIGRATION_1_2).build();
     }
 
     @AppScope

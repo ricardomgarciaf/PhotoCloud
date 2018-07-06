@@ -9,6 +9,6 @@
     android:paddingLeft="@dimen/recycler_padding"
     android:paddingRight="@dimen/recycler_padding"
     android:background="@color/white"
-    tools:context=".activities.home.HomeActivity">
+    tools:context=".activities.album.AlbumActivity">
 
 </android.support.v7.widget.RecyclerView>

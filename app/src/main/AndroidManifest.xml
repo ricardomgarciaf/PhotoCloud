@@ -14,8 +14,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.home.HomeActivity" android:theme="@style/Base.Theme.AppCompat.Light"/>
-        <activity android:name=".activities.login.LoginActivity"/>
+        <activity
+            android:name=".activities.home.HomeActivity"
+            android:theme="@style/Base.Theme.AppCompat.Light" />
+        <activity android:name=".activities.login.LoginActivity" />
         <activity android:name=".activities.register.RegisterActivity" />
         <activity android:name=".activities.splash.SplashActivity">
             <intent-filter>
@@ -24,9 +26,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="ff3d1ab0526421c7e0b70ea00289202ff2f85cc2" />
+
+        <activity android:name=".activities.album.AlbumActivity"></activity>
     </application>
 
 </manifest>

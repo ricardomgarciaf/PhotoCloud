@@ -5,6 +5,10 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.util.Date;
+
 /**
  * Created by Ricardo Garcia on 3/18/2018.
  */
@@ -18,9 +22,13 @@ public class User {
     @ColumnInfo(name = "username")
     private String username;
 
+    @ColumnInfo(name="dateCreated")
+    private OffsetDateTime dateCreated;
+
     public User(@NonNull String id, String username) {
         this.id = id;
         this.username = username;
+        this.dateCreated=OffsetDateTime.now();
     }
 
     @NonNull

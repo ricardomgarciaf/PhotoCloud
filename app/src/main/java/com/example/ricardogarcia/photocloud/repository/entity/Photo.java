@@ -6,6 +6,8 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import java.time.OffsetDateTime;
+
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
 /**
@@ -29,6 +31,18 @@ public class Photo {
 
     @ColumnInfo(name = "albumId")
     private String albumId;
+
+    @ColumnInfo(name="dateCreated")
+    private OffsetDateTime dateCreated;
+
+    public Photo(@NonNull String id, String name, String source, String geolocation, String albumId) {
+        this.id = id;
+        this.name = name;
+        this.source = source;
+        this.geolocation = geolocation;
+        this.albumId = albumId;
+        this.dateCreated = OffsetDateTime.now();
+    }
 
     @NonNull
     public String getId() {
@@ -69,5 +83,9 @@ public class Photo {
 
     public void setAlbumId(String albumId) {
         this.albumId = albumId;
+    }
+
+    public OffsetDateTime getDateCreated() {
+        return dateCreated;
     }
 }

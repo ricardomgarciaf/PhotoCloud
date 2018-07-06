@@ -25,7 +25,6 @@ public class HomePresenter implements OnHomeListener {
     private HomeModel model;
     private CompositeDisposable disposables;
     private List<HashMap<String, String>> albumsList;
-    private List<Integer> selectedItems;
 
     public HomePresenter(HomeActivity view, HomeModel model) {
         this.view = view;
@@ -50,7 +49,6 @@ public class HomePresenter implements OnHomeListener {
     @Override
     public void onAlbumsDeleted(List<String> selectedItems) {
         albumsList.removeIf(album->selectedItems.contains(album.get(Function.KEY_ALBUM)));
-        //selectedItems.forEach(i -> albumsList.remove((int) i));
         view.loadAlbums(albumsList);
     }
 
@@ -112,6 +110,6 @@ public class HomePresenter implements OnHomeListener {
     public void deleteSelectedItems(List<Integer> selectedItems) {
         List<String> albumNames = new ArrayList<>();
         selectedItems.forEach(i->albumNames.add(albumsList.get(i).get(Function.KEY_ALBUM)));
-        model.deleteAlbum(albumNames, this);
+        disposables.add(model.deleteAlbum(albumNames, this));
     }
 }

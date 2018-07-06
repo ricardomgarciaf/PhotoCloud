@@ -18,11 +18,14 @@ public interface AlbumDao {
     @Query("SELECT * FROM album")
     List<Album> getAll();
 
-    @Query("SELECT * FROM album where userId=:userId")
+    @Query("SELECT * FROM album WHERE userId=:userId ORDER BY dateCreated DESC")
     List<Album> getAlbumsByUser(String userId);
 
-    @Query("SELECT COUNT(*) FROM album where name=:albumName AND userId=:userId")
+    @Query("SELECT COUNT(*) FROM album WHERE name=:albumName AND userId=:userId")
     int isAlbumNameRepeated(String albumName, String userId);
+
+    @Query("SELECT * FROM album WHERE name=:albumName AND userId=:userId")
+    Album getAlbumByName(String albumName, String userId);
 
     @Insert
     void insert(Album album);

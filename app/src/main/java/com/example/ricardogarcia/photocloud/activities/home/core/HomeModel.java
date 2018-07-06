@@ -7,7 +7,8 @@ import com.example.ricardogarcia.photocloud.activities.home.HomeActivity;
 import com.example.ricardogarcia.photocloud.activities.home.list.Function;
 import com.example.ricardogarcia.photocloud.api.PhotoCloudApiInterface;
 import com.example.ricardogarcia.photocloud.application.PhotoCloudApplication;
-import com.example.ricardogarcia.photocloud.model.ServiceResponse;
+import com.example.ricardogarcia.photocloud.model.AlbumCreationInfo;
+import com.example.ricardogarcia.photocloud.model.AlbumsDeletionInfo;
 import com.example.ricardogarcia.photocloud.repository.datasource.AlbumDataSource;
 import com.example.ricardogarcia.photocloud.repository.datasource.PhotoDataSource;
 import com.example.ricardogarcia.photocloud.repository.datasource.UserDataSource;
@@ -71,7 +72,7 @@ public class HomeModel {
                 .filter(albumRepeated -> !albumRepeated)
                 .flatMap(aBoolean -> {
                     Timber.d("FlatMap");
-                    return api.createAlbum(albumName, userId);
+                    return api.createAlbum(new AlbumCreationInfo(albumName, userId));
                 })
                 .map(serviceResponse -> {
                     Timber.d("Service response->" + serviceResponse.getCode());
@@ -102,11 +103,11 @@ public class HomeModel {
     Observable<List<HashMap<String, String>>> provideAlbumList() {
         List<HashMap<String, String>> albumMap = new ArrayList<>();
         return Observable.fromCallable(() -> {
-            String userId = userDataSource.findByName(PhotoCloudApplication.pref.getString(PhotoCloudApplication.KEY_USER, "")).getId();
+            userId = userDataSource.findByName(PhotoCloudApplication.pref.getString(PhotoCloudApplication.KEY_USER, "")).getId();
             List<Album> albums = albumDataSource.getAlbumsByUser(userId);
             albums.forEach(a -> {
                 List<Photo> photosByAlbum = photoDataSource.getPhotosByAlbum(a.getId());
-                albumMap.add(Function.mappingInbox(a.getName(), photosByAlbum.size() > 0 ? photosByAlbum.get(0).getSource() : null, String.valueOf(photosByAlbum.size())));
+                albumMap.add(Function.mappingAlbumInbox(a.getName(), photosByAlbum.size() > 0 ? photosByAlbum.get(0).getSource() : null, String.valueOf(photosByAlbum.size())));
             });
             return albumMap;
         }).subscribeOn(Schedulers.io())
@@ -115,9 +116,9 @@ public class HomeModel {
 
     Disposable deleteAlbum(List<String> albumNames, OnHomeListener listener) {
         return Observable.fromCallable(() -> {
-            String userId = userDataSource.findByName(PhotoCloudApplication.pref.getString(PhotoCloudApplication.KEY_USER, "")).getId();
+            userId = userDataSource.findByName(PhotoCloudApplication.pref.getString(PhotoCloudApplication.KEY_USER, "")).getId();
             return albumDataSource.getAlbumsByUser(userId).stream().filter(a -> albumNames.contains(a.getName())).map(Album::getId).collect(Collectors.toList());
-        }).flatMap(albums -> api.deleteAlbums(albums, userId))
+        }).flatMap(albums -> api.deleteAlbums(new AlbumsDeletionInfo(albums, userId)))
                 .map(serviceResponse -> {
                     if (serviceResponse.getCode() == 1) {
                         albumNames.forEach(albumName -> albumDataSource.deleteItemByName(albumName, userId));
@@ -141,7 +142,7 @@ public class HomeModel {
     }
 
     public void goAlbumDescription(HashMap<String, String> albumSelected) {
-        Timber.d("Album selected" + albumSelected.get(Function.KEY_ALBUM));
+        homeActivity.goToAlbumDescription(albumSelected.get(Function.KEY_ALBUM));
     }
 
 

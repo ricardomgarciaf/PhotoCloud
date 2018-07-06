@@ -6,13 +6,11 @@ package com.example.ricardogarcia.photocloud.activities.home.core;
 
 public interface HomeView {
 
-    void hideProgress();
-
-    void showProgress();
-
     void showExistingAlbumName();
 
     void showAlbumError();
 
     void onAlbumCreated();
+
+    void goToAlbumDescription(String albumName);
 }
