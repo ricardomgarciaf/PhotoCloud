@@ -26,4 +26,7 @@ public interface PhotoDao {
 
     @Delete
     void delete(Photo photo);
+
+    @Query("DELETE FROM photo WHERE id=:photoID")
+    void deletePhotoById(String photoID);
 }

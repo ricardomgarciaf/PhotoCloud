@@ -42,4 +42,8 @@ public class PhotoDataSource implements DataSource<Photo> {
     public int getNumberOfPhotosByAlbum(String album){
         return photoDao.getPhotosByAlbum(album).size();
     }
+
+    public void deletePhotoById(String photoId){
+        photoDao.deletePhotoById(photoId);
+    }
 }

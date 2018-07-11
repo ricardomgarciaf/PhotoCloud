@@ -2,6 +2,7 @@ package com.example.ricardogarcia.photocloud.repository.entity;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
@@ -12,7 +13,7 @@ import java.util.Date;
 /**
  * Created by Ricardo Garcia on 3/18/2018.
  */
-@Entity(tableName = "user")
+@Entity(tableName = "user", indices = {@Index("id")})
 public class User {
 
     @PrimaryKey(autoGenerate = false)
@@ -46,5 +47,13 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public OffsetDateTime getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(OffsetDateTime dateCreated) {
+        this.dateCreated = dateCreated;
     }
 }

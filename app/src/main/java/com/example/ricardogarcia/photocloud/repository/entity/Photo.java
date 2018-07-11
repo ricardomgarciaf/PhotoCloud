@@ -20,9 +20,6 @@ public class Photo {
     @NonNull
     private String id;
 
-    @ColumnInfo(name = "name")
-    private String name;
-
     @ColumnInfo(name = "source")
     private String source;
 
@@ -35,9 +32,8 @@ public class Photo {
     @ColumnInfo(name="dateCreated")
     private OffsetDateTime dateCreated;
 
-    public Photo(@NonNull String id, String name, String source, String geolocation, String albumId) {
+    public Photo(@NonNull String id, String source, String geolocation, String albumId) {
         this.id = id;
-        this.name = name;
         this.source = source;
         this.geolocation = geolocation;
         this.albumId = albumId;
@@ -51,14 +47,6 @@ public class Photo {
 
     public void setId(@NonNull String id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getSource() {
@@ -83,6 +71,10 @@ public class Photo {
 
     public void setAlbumId(String albumId) {
         this.albumId = albumId;
+    }
+
+    public void setDateCreated(OffsetDateTime dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
     public OffsetDateTime getDateCreated() {

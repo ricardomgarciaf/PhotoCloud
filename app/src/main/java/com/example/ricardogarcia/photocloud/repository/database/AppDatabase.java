@@ -15,7 +15,7 @@ import com.example.ricardogarcia.photocloud.repository.entity.User;
 /**
  * Created by Ricardo Garcia on 3/18/2018.
  */
-@Database(entities = {User.class, Album.class, Photo.class}, version = 2)
+@Database(entities = {User.class, Album.class, Photo.class}, version = 1, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
 

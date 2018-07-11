@@ -53,9 +53,16 @@ public class HomePresenter implements OnHomeListener {
     }
 
     @Override
-    public void onAlbumNameError() {
+    public void onDeletedAlbumFailure() {
         if (view != null) {
-            view.showAlbumError();
+            view.onFailure();
+        }
+    }
+
+    @Override
+    public void onAlbumNameEmpty() {
+        if (view != null) {
+            view.showAlbumNameError();
         }
     }
 
@@ -67,7 +74,7 @@ public class HomePresenter implements OnHomeListener {
     }
 
     @Override
-    public void onSucces() {
+    public void onCreatedAlbumSuccess() {
         if (view != null) {
             view.onAlbumCreated();
             disposables.clear();
@@ -76,9 +83,16 @@ public class HomePresenter implements OnHomeListener {
     }
 
     @Override
-    public void onFailure() {
+    public void onCreatedAlbumFailure() {
         if (view != null) {
-            view.showAlbumError();
+            view.onFailure();
+        }
+    }
+
+    @Override
+    public void onAlbumsDisplayedFailure() {
+        if (view != null) {
+            view.onFailure();
         }
     }
 
@@ -88,7 +102,7 @@ public class HomePresenter implements OnHomeListener {
                     albumsList = albums;
                     view.loadAlbums(albums);
                 }, throwable -> {
-                    onFailure();
+                    onAlbumsDisplayedFailure();
                     UiUtils.logThrowable(throwable);
                 });
     }

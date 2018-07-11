@@ -8,9 +8,11 @@ public interface HomeView {
 
     void showExistingAlbumName();
 
-    void showAlbumError();
+    void showAlbumNameError();
 
     void onAlbumCreated();
+
+    void onFailure();
 
     void goToAlbumDescription(String albumName);
 }

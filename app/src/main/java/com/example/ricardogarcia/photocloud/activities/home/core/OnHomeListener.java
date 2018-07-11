@@ -8,13 +8,17 @@ import java.util.List;
 
 public interface OnHomeListener {
 
-    void onAlbumsDeleted(List<String> albumsName);
+    void onCreatedAlbumSuccess();
 
-    void onAlbumNameError();
+    void onCreatedAlbumFailure();
+
+    void onAlbumsDisplayedFailure();
+
+    void onAlbumNameEmpty();
 
     void onExistingAlbumName();
 
-    void onSucces();
+    void onAlbumsDeleted(List<String> albumsName);
 
-    void onFailure();
+    void onDeletedAlbumFailure();
 }

@@ -1,14 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/recyclerViewGallery"
-    android:layout_height="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:scrollbars="vertical"
-    android:paddingTop="@dimen/recycler_padding"
-    android:paddingLeft="@dimen/recycler_padding"
-    android:paddingRight="@dimen/recycler_padding"
-    android:background="@color/white"
-    tools:context=".activities.album.AlbumActivity">
+    android:layout_height="match_parent">
 
-</android.support.v7.widget.RecyclerView>
+    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/recyclerViewGallery"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:paddingLeft="@dimen/recycler_padding"
+        android:paddingRight="@dimen/recycler_padding"
+        android:paddingTop="@dimen/recycler_padding"
+        android:scrollbars="vertical"
+        tools:context=".activities.album.AlbumActivity">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_gallery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="@dimen/bottom_button_2"
+        android:visibility="invisible"
+        android:src="@drawable/ic_gallery"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="@dimen/bottom_button_1"
+        android:visibility="invisible"
+        android:src="@drawable/ic_camera"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/ic_add"/>
+</RelativeLayout>

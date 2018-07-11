@@ -49,7 +49,7 @@ public class HomeModel {
 
     Disposable createAlbum(String albumName, OnHomeListener listener) {
         if (albumName.isEmpty()) {
-            listener.onAlbumNameError();
+            listener.onAlbumNameEmpty();
             return null;
         }
         return Observable.fromCallable(() -> {
@@ -88,15 +88,15 @@ public class HomeModel {
                     switch (code) {
                         case 1:
                             Timber.d("onSuccess");
-                            listener.onSucces();
+                            listener.onCreatedAlbumSuccess();
                             break;
                         default:
-                            listener.onFailure();
+                            listener.onCreatedAlbumFailure();
                             break;
                     }
                 }, throwable -> {
                     UiUtils.logThrowable(throwable);
-                    listener.onFailure();
+                    listener.onCreatedAlbumFailure();
                 });
     }
 
@@ -132,12 +132,12 @@ public class HomeModel {
                             listener.onAlbumsDeleted(albumNames);
                             break;
                         default:
-                            listener.onFailure();
+                            listener.onDeletedAlbumFailure();
                             break;
                     }
                 }, throwable -> {
                     UiUtils.logThrowable(throwable);
-                    listener.onFailure();
+                    listener.onDeletedAlbumFailure();
                 });
     }
 

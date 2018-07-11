@@ -28,4 +28,8 @@
     <string name="existing_album_name">There is an existing album with same name</string>
     <string name="empty_album">The album must have a title</string>
     <string name="photos">Photos</string>
+    <string name="unexpected_error_title">Unexpected error</string>
+    <string name="unexpected_error_description">There has been an error with the application</string>
+    <string name="ok">Ok</string>
+    <string name="file_provider">com.example.ricardogarcia.photocloud.fileprovider</string>
 </resources>

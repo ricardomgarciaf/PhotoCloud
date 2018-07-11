@@ -53,7 +53,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
 
     private AlbumAdapter adapter;
 
-    private boolean actionModeVisible=false;
+    private boolean actionModeVisible = false;
 
     private ActionMode actionMode;
 
@@ -61,12 +61,12 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         return actionModeVisible;
     }
 
-    private ActionMode.Callback actionModeCallback= new ActionMode.Callback() {
+    private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            MenuInflater inflater=actionMode.getMenuInflater();
-            inflater.inflate(R.menu.context_home_menu,menu);
-            actionModeVisible=true;
+            MenuInflater inflater = actionMode.getMenuInflater();
+            inflater.inflate(R.menu.context_home_menu, menu);
+            actionModeVisible = true;
             return true;
         }
 
@@ -83,9 +83,9 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         }
 
         @Override
-        public void onDestroyActionMode(ActionMode actionMode) {
-            actionMode=null;
-            actionModeVisible=false;
+        public void onDestroyActionMode(ActionMode a) {
+            actionMode = null;
+            actionModeVisible = false;
             adapter.clearSelectedItems();
 
         }
@@ -138,13 +138,26 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     }
 
     @Override
-    public void showAlbumError() {
+    public void showAlbumNameError() {
         Toast.makeText(this, getString(R.string.empty_album), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onAlbumCreated() {
         inputDialog.dismiss();
+    }
+
+    @Override
+    public void onFailure() {
+        MaterialDialog dialog = new MaterialDialog.Builder(this)
+                .title(R.string.unexpected_error_title)
+                .content(R.string.unexpected_error_description)
+                .positiveText(R.string.ok)
+                .onPositive((d, which) -> {
+                    d.dismiss();
+                    finish();
+                }).build();
+        dialog.show();
     }
 
     private void createAlbum() {
@@ -168,14 +181,14 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         return adapter.observeAlbumLongItemClicks();
     }
 
-    public void selectAlbumLongItem(int position){
-        actionMode=startActionMode(actionModeCallback);
+    public void selectAlbumLongItem(int position) {
+        actionMode = startActionMode(actionModeCallback);
         adapter.addSelectedItem(position);
         adapter.selectItem(position);
         actionMode.setTitle(String.valueOf(adapter.getSelectedItemsSize()));
     }
 
-    public void selectAlbumItem(int position){
+    public void selectAlbumItem(int position) {
         if (adapter.isItemInSelectedItem(position)) {
             adapter.removeSelectedItem(position);
         } else {
@@ -193,8 +206,9 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
 
     @Override
     public void goToAlbumDescription(String albumName) {
-        Intent i= new Intent(this, AlbumActivity.class);
-        i.putExtra(ConstantUtils.ALBUM_NAME,albumName);
+        Intent i = new Intent(this, AlbumActivity.class);
+        i.putExtra(ConstantUtils.ALBUM_NAME, albumName);
         startActivity(i);
+        finish();
     }
 }

@@ -28,8 +28,8 @@ public class RoomModule {
 
     public RoomModule(Context context){
         appDatabase= Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class,
-                Environment.getExternalStorageDirectory()+ File.separator+"photocloud-database")
-                .addMigrations(Migrations.MIGRATION_1_2).build();
+                Environment.getExternalStorageDirectory()+ File.separator+"photocloud-database").build();
+                //.addMigrations(Migrations.MIGRATION_1_2)
     }
 
     @AppScope

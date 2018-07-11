@@ -5,17 +5,14 @@ package com.example.ricardogarcia.photocloud.model;
  */
 
 public class Photo {
-    private String name;
     private String source;
     private String albumID;
     private String geolocation;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public Photo(String source, String albumID, String geolocation) {
+        this.source = source;
+        this.albumID = albumID;
+        this.geolocation = geolocation;
     }
 
     public String getSource() {

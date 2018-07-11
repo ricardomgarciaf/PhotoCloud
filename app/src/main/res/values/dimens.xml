@@ -8,4 +8,6 @@
     <dimen name="album_title_text_size">12sp</dimen>
     <dimen name="cardview_margin_bottom">10dp</dimen>
     <dimen name="cardview_margin_start">8dp</dimen>
+    <dimen name="bottom_button_1">55dp</dimen>
+    <dimen name="bottom_button_2">105dp</dimen>
 </resources>
